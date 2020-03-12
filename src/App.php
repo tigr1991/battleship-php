@@ -11,56 +11,23 @@ class App
     /** @var \Battleship\Ship[] */
     private static $enemyFleet = array();
     private static $console;
+    private static $textPrinter;
 
     static function run()
     {
-        self::$console = new Console();
-        self::$console->setForegroundColor(Color::MAGENTA);
+        self::$console = new \Console();
+        self::$textPrinter = new \Battleship\TextPrinter();
 
-        self::$console->println("                                     |__");
-        self::$console->println("                                     |\\/");
-        self::$console->println("                                     ---");
-        self::$console->println("                                     / | [");
-        self::$console->println("                              !      | |||");
-        self::$console->println("                            _/|     _/|-++'");
-        self::$console->println("                        +  +--|    |--|--|_ |-");
-        self::$console->println("                     { /|__|  |/\\__|  |--- |||__/");
-        self::$console->println("                    +---------------___[}-_===_.'____                 /\\");
-        self::$console->println("                ____`-' ||___-{]_| _[}-  |     |_[___\\==--            \\/   _");
-        self::$console->println(" __..._____--==/___]_|__|_____________________________[___\\==--____,------' .7");
-        self::$console->println("|                        Welcome to Battleship                         BB-61/");
-        self::$console->println(" \\_________________________________________________________________________|");
-        self::$console->println();
-        self::$console->resetForegroundColor();
+        self::$textPrinter->drawShip();
+
         self::InitializeGame();
         self::StartGame();
     }
 
     public static function InitializeEnemyFleet()
     {
-        self::$enemyFleet = GameController::initializeShips();
-
-        array_push(self::$enemyFleet[0]->getPositions(), new Position('B', 4));
-        array_push(self::$enemyFleet[0]->getPositions(), new Position('B', 5));
-        array_push(self::$enemyFleet[0]->getPositions(), new Position('B', 6));
-        array_push(self::$enemyFleet[0]->getPositions(), new Position('B', 7));
-        array_push(self::$enemyFleet[0]->getPositions(), new Position('B', 8));
-
-        array_push(self::$enemyFleet[1]->getPositions(), new Position('E', 6));
-        array_push(self::$enemyFleet[1]->getPositions(), new Position('E', 7));
-        array_push(self::$enemyFleet[1]->getPositions(), new Position('E', 8));
-        array_push(self::$enemyFleet[1]->getPositions(), new Position('E', 9));
-
-        array_push(self::$enemyFleet[2]->getPositions(), new Position('A', 3));
-        array_push(self::$enemyFleet[2]->getPositions(), new Position('B', 3));
-        array_push(self::$enemyFleet[2]->getPositions(), new Position('C', 3));
-
-        array_push(self::$enemyFleet[3]->getPositions(), new Position('F', 8));
-        array_push(self::$enemyFleet[3]->getPositions(), new Position('G', 8));
-        array_push(self::$enemyFleet[3]->getPositions(), new Position('H', 8));
-
-        array_push(self::$enemyFleet[4]->getPositions(), new Position('C', 5));
-        array_push(self::$enemyFleet[4]->getPositions(), new Position('C', 6));
+        $creator = new \Battleship\FleetCreator();
+        self::$enemyFleet = $creator->getRandomFleet();
     }
 
     public static function getRandomPosition()
@@ -80,7 +47,6 @@ class App
 
         self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
-        return;
         /** @var \Battleship\Ship $ship */
         foreach (self::$myFleet as $ship) {
 
@@ -170,6 +136,8 @@ class App
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
+            static::checkFinish(static::$enemyFleet, 'You are win', \Battleship\Color::YELLOW);
+
             self::$console->println();
 
             static::step($step, 'Computer', Color::YELLOW);
@@ -197,10 +165,13 @@ class App
             }
 
 
+            static::checkFinish(static::$myFleet, 'You are lose', \Battleship\Color::RED);
+
             $step++;
 //            exit();
             self::$console->println("\n\n\n==========================================================================================");
             self::$console->println("==========================================================================================");
+
         }
     }
 
@@ -238,5 +209,21 @@ class App
         self::$console->println("Step №{$step} {$color}({$who}){$magenta}");
         self::$console->println("-------------------------------");
         self::$console->println($default);
+    }
+
+    static protected function checkFinish($ships, $message, $color)
+    {
+        $end = true;
+        foreach ($ships as $ship) {
+            if ($ship->getStatus() !== \Battleship\Ship::ERROR) {
+                $end = false;
+            }
+        }
+
+        $default = Color::DEFAULT_GREY;
+        if ($end) {
+            echo "{$color}{$message}{$default}";
+            exit();
+        }
     }
 }
