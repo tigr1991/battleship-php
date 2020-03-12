@@ -152,8 +152,10 @@ class App
 
 
 
+            self::$console->println(\Battleship\Color::YELLOW);
+            self::$console->println("Enter coordinates for your shot:");
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
 
-            self::$console->println("Enter coordinates for your shot :");
             $position = readline("");
 
             $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
@@ -164,7 +166,6 @@ class App
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             } else {
                 self::$console->println(\Battleship\Color::CADET_BLUE);
-                static::hit();
                 echo "Miss";
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
@@ -178,11 +179,10 @@ class App
             if ($isHit) {
                 self::$console->println(\Battleship\Color::RED);
                 static::hit();
-                echo "Oooop! Computer hit you!";
+                echo "Oooops! Computer hit you!";
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             } else {
                 self::$console->println(\Battleship\Color::CADET_BLUE);
-                static::hit();
                 echo "Yeah! Computer miss";
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
@@ -192,13 +192,15 @@ class App
             if ($isHit) {
                 self::$console->println(\Battleship\Color::RED);
                 static::hit();
-                echo "Yeah ! Nice hit !";
+                echo "Yeah! Nice hit !";
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
 
             $step++;
 //            exit();
+            self::$console->println("\n\n\n==========================================================================================");
+            self::$console->println("==========================================================================================");
         }
     }
 
