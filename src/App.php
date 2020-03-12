@@ -118,15 +118,21 @@ class App
             }
             echo Color::DEFAULT_GREY;
 
+            while(true) {
+                self::$console->println(\Battleship\Color::YELLOW);
+                self::$console->println("Enter coordinates for your shot:");
+                printf(\Battleship\Color::DEFAULT_GREY);
+                $position = readline("");
+                try {
+                    $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
+                    break;
+                } catch (Exception $e) {
+                    printf(\Battleship\Color::RED);
+                    printf("Incorrect input, pls try again!");
+                    printf(\Battleship\Color::DEFAULT_GREY);
+                }
+            }
 
-
-            self::$console->println(\Battleship\Color::YELLOW);
-            self::$console->println("Enter coordinates for your shot :");
-            self::$console->println(\Battleship\Color::DEFAULT_GREY);
-
-            $position = readline("");
-
-            $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
             if ($isHit) {
                 self::$console->println(\Battleship\Color::RED);
                 static::hit();
@@ -182,8 +188,8 @@ class App
         $letter = substr($input, 0, 1);
         $number = substr($input, 1, 1);
 
-        if(!is_numeric($number)) {
-            throw new Exception("Not a number: $number");
+        if(strlen($input) !== 2) {
+            throw new Exception("Not a valid number!");
         }
 
         return new Position($letter, $number);
