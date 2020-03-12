@@ -11,6 +11,7 @@ class App
     /** @var \Battleship\Ship[] */
     private static $enemyFleet = array();
     private static $console;
+    /** @var \Battleship\TextPrinter */
     private static $textPrinter;
 
     static function run()
@@ -120,7 +121,7 @@ class App
 
 
             self::$console->println(\Battleship\Color::YELLOW);
-            self::$console->println("Enter coordinates for your shot:");
+            self::$console->println("Enter coordinates for your shot :");
             self::$console->println(\Battleship\Color::DEFAULT_GREY);
 
             $position = readline("");
@@ -161,7 +162,7 @@ class App
             if ($isHit) {
                 self::$console->println(\Battleship\Color::RED);
                 static::hit();
-                echo "Yeah! Nice hit !";
+                echo "Yeah ! Nice hit !";
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
@@ -191,14 +192,7 @@ class App
     static protected function hit()
     {
         self::beep();
-        self::$console->println("                \\         .  ./");
-        self::$console->println("              \\      .:\" \";'.:..\" \"   /");
-        self::$console->println("                  (M^^.^~~:.'\" \").");
-        self::$console->println("            -   (/  .    . . \\ \\)  -");
-        self::$console->println("               ((| :. ~ ^  :. .|))");
-        self::$console->println("            -   (\\- |  \\ /  |  /)  -");
-        self::$console->println("                 -\\  \\     /  /-");
-        self::$console->println("                   \\  \\   /  /");
+        self::$textPrinter->drawBoom();
     }
 
     static protected function step(string $who, string $color)
