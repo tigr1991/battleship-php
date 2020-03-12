@@ -11,7 +11,7 @@ class FleetCreator
 
     public function getRandomFleet(): array
     {
-        return $this->returnDemo();
+//        return $this->returnDemo();
         switch (\random_int(1, 6)) {
             case 1:
                 return $this->var1();
