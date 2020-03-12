@@ -6,6 +6,10 @@ namespace Battleship;
 class Ship
 {
 
+    public const OK = 1;
+    public const WARNING = 2;
+    public const ERROR = 3;
+
     private $name;
     private $size;
     private $color;
@@ -61,6 +65,24 @@ class Ship
     public function setSize($size)
     {
         $this->size = $size;
+    }
+
+    public function getStatus()
+    {
+        $countHitted = 0;
+        foreach ($this->positions as $position) {
+            if ($position->getStatus() === \Battleship\Position::STATUS_SHIP_DESTROYED) {
+                $countHitted++;
+            }
+        }
+        switch (true) {
+            case $countHitted === count($this->positions):
+                return self::ERROR;
+            case $countHitted === 0:
+                return self::OK;
+            default:
+                return self::WARNING;
+        }
     }
 
 }

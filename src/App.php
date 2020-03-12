@@ -136,6 +136,23 @@ class App
 
             static::step($step, 'You', Color::YELLOW);
             self::$console->println("Player, it's your turn");
+
+            self::$console->println("Enemy fleet status:");
+            foreach (self::$enemyFleet as $ship) {
+                if ($ship->getStatus() === \Battleship\Ship::OK) {
+                    echo Color::CHARTREUSE;
+                    echo "{$ship->getName()} - Alive\n";
+                }
+                if ($ship->getStatus() === \Battleship\Ship::ERROR) {
+                    echo Color::RED;
+                    echo "{$ship->getName()} - Killed\n";
+                }
+            }
+            echo Color::DEFAULT_GREY;
+
+
+
+
             self::$console->println("Enter coordinates for your shot :");
             $position = readline("");
 
