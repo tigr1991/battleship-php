@@ -14,13 +14,17 @@ class App
     /** @var \Battleship\TextPrinter */
     private static $textPrinter;
 
+    /** @var Position[] */
+    protected $myHistory = [];
+    /** @var Position[] */
+    protected $enemyHistory = [];
+
     static function run()
     {
         self::$console = new \Console();
         self::$textPrinter = new \Battleship\TextPrinter();
 
         self::$textPrinter->drawShip();
-
         self::InitializeGame();
         self::StartGame();
     }
