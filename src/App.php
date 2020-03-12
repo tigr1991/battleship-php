@@ -84,7 +84,7 @@ class App
 
             self::$console->println();
             printf("Please enter the positions for the %s (size: %s)", $ship->getName(), $ship->getSize());
-
+break;
             for ($i = 1; $i <= $ship->getSize(); $i++) {
                 printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
                 $input = readline("");
@@ -121,7 +121,7 @@ class App
 
         $step = 1;
         while (true) {
-            self::$console->println("==========================================================================================");
+            self::$console->println("\n\n\n==========================================================================================");
             self::$console->println("==========================================================================================");
 
             static::step($step, 'You', Color::YELLOW);
@@ -147,6 +147,19 @@ class App
             static::step($step, 'Computer', Color::YELLOW);
             $position = self::getRandomPosition();
             $isHit = GameController::checkIsHit(self::$myFleet, $position);
+
+            if ($isHit) {
+                self::$console->println(\Battleship\Color::RED);
+                static::hit();
+                echo "Oooop! Computer hit you!";
+                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+            } else {
+                self::$console->println(\Battleship\Color::CADET_BLUE);
+                static::hit();
+                echo "Yeah! Computer miss";
+                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+            }
+
             self::$console->println();
             printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
             if ($isHit) {
