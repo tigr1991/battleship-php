@@ -98,9 +98,10 @@ class App
         $step = 1;
         while (true) {
             self::$console->println("\n\n\n==========================================================================================");
+            self::$console->println("----------------------------------------- Step №{$step} ----------------------------------------");
             self::$console->println("==========================================================================================");
 
-            static::step($step, 'You', Color::YELLOW);
+            static::step('You', Color::YELLOW);
             self::$console->println("Player, it's your turn");
 
             self::$console->println("Enemy fleet status:");
@@ -140,7 +141,7 @@ class App
 
             self::$console->println();
 
-            static::step($step, 'Computer', Color::YELLOW);
+            static::step('Computer', Color::YELLOW);
             $position = self::getRandomPosition();
             $isHit = GameController::checkIsHit(self::$myFleet, $position);
 
@@ -200,15 +201,15 @@ class App
         self::$console->println("                   \\  \\   /  /");
     }
 
-    static protected function step(int $step, string $who, string $color)
+    static protected function step(string $who, string $color)
     {
         $default = \Battleship\Color::DEFAULT_GREY;
         $magenta = \Battleship\Color::MAGENTA;
-        self::$console->println($magenta);
+        printf($magenta);
         self::$console->println("\n\n-------------------------------");
-        self::$console->println("Step №{$step} {$color}({$who}){$magenta}");
+        self::$console->println("Step by {$color}({$who}){$magenta}");
         self::$console->println("-------------------------------");
-        self::$console->println($default);
+        printf($default);
     }
 
     static protected function checkFinish($ships, $message, $color)
