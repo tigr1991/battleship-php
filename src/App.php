@@ -14,13 +14,17 @@ class App
     /** @var \Battleship\TextPrinter */
     private static $textPrinter;
 
+    /** @var Position[] */
+    protected $myHistory = [];
+    /** @var Position[] */
+    protected $enemyHistory = [];
+
     static function run()
     {
         self::$console = new \Console();
         self::$textPrinter = new \Battleship\TextPrinter();
 
         self::$textPrinter->drawShip();
-
         self::InitializeGame();
         self::StartGame();
     }
@@ -144,7 +148,10 @@ class App
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
-            static::checkFinish(static::$enemyFleet, 'You are win', \Battleship\Color::YELLOW);
+            if(static::checkFinish(static::$enemyFleet)) {
+                self::$textPrinter->drawWin();
+                exit();
+            }
 
             self::$console->println();
 
@@ -173,7 +180,10 @@ class App
             }
 
 
-            static::checkFinish(static::$myFleet, 'You are lose', \Battleship\Color::RED);
+            if(static::checkFinish(static::$myFleet)) {
+                self::$textPrinter->drawLose();
+                exit();
+            }
 
             $step++;
 //            exit();
@@ -212,7 +222,7 @@ class App
         printf($default);
     }
 
-    static protected function checkFinish($ships, $message, $color)
+    static protected function checkFinish($ships)
     {
         $end = true;
         foreach ($ships as $ship) {
@@ -221,10 +231,6 @@ class App
             }
         }
 
-        $default = Color::DEFAULT_GREY;
-        if ($end) {
-            echo "{$color}{$message}{$default}";
-            exit();
-        }
+        return $end;
     }
 }
