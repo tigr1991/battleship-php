@@ -8,6 +8,7 @@ use Battleship\Color;
 class App
 {
     private static $myFleet = array();
+    /** @var \Battleship\Ship[] */
     private static $enemyFleet = array();
     private static $console;
 
@@ -117,46 +118,42 @@ class App
         self::$console->println("   \\    \\_/");
         self::$console->println("    \" \"\" \"\" \"\" \"");
 
+        $step = 1;
         while (true) {
-            self::$console->println("");
+            static::step($step, 'You', Color::YELLOW);
             self::$console->println("Player, it's your turn");
             self::$console->println("Enter coordinates for your shot :");
             $position = readline("");
 
             $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
             if ($isHit) {
-                self::beep();
-                self::$console->println("                \\         .  ./");
-                self::$console->println("              \\      .:\" \";'.:..\" \"   /");
-                self::$console->println("                  (M^^.^~~:.'\" \").");
-                self::$console->println("            -   (/  .    . . \\ \\)  -");
-                self::$console->println("               ((| :. ~ ^  :. .|))");
-                self::$console->println("            -   (\\- |  \\ /  |  /)  -");
-                self::$console->println("                 -\\  \\     /  /-");
-                self::$console->println("                   \\  \\   /  /");
+                self::$console->println(\Battleship\Color::RED);
+                static::hit();
+                echo "Yeah ! Nice hit !";
+                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+            } else {
+                self::$console->println(\Battleship\Color::CADET_BLUE);
+                static::hit();
+                echo "Miss";
+                self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
-            echo $isHit ? "Yeah ! Nice hit !" : "Miss";
             self::$console->println();
 
+            static::step($step, 'Computer', Color::YELLOW);
             $position = self::getRandomPosition();
             $isHit = GameController::checkIsHit(self::$myFleet, $position);
             self::$console->println();
-            printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss");
+            printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
             if ($isHit) {
-                self::beep();
-
-                self::$console->println("                \\         .  ./");
-                self::$console->println("              \\      .:\" \";'.:..\" \"   /");
-                self::$console->println("                  (M^^.^~~:.'\" \").");
-                self::$console->println("            -   (/  .    . . \\ \\)  -");
-                self::$console->println("               ((| :. ~ ^  :. .|))");
-                self::$console->println("            -   (\\- |  \\ /  |  /)  -");
-                self::$console->println("                 -\\  \\     /  /-");
-                self::$console->println("                   \\  \\   /  /");
-
+                self::$console->println(\Battleship\Color::RED);
+                static::hit();
+                echo "Yeah ! Nice hit !";
+                self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
+
+            $step++;
 //            exit();
         }
     }
@@ -171,5 +168,29 @@ class App
         }
 
         return new Position($letter, $number);
+    }
+
+    static protected function hit()
+    {
+        self::beep();
+        self::$console->println("                \\         .  ./");
+        self::$console->println("              \\      .:\" \";'.:..\" \"   /");
+        self::$console->println("                  (M^^.^~~:.'\" \").");
+        self::$console->println("            -   (/  .    . . \\ \\)  -");
+        self::$console->println("               ((| :. ~ ^  :. .|))");
+        self::$console->println("            -   (\\- |  \\ /  |  /)  -");
+        self::$console->println("                 -\\  \\     /  /-");
+        self::$console->println("                   \\  \\   /  /");
+    }
+
+    static protected function step(int $step, string $who, string $color)
+    {
+        $default = \Battleship\Color::DEFAULT_GREY;
+        $magenta = \Battleship\Color::MAGENTA;
+        self::$console->println($magenta);
+        self::$console->println("\n\n-------------------------------");
+        self::$console->println("Step №{$step} {$color}({$who}){$magenta}");
+        self::$console->println("-------------------------------");
+        self::$console->println($default);
     }
 }
