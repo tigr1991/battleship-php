@@ -80,7 +80,6 @@ class App
 
         self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
-        return;
         /** @var \Battleship\Ship $ship */
         foreach (self::$myFleet as $ship) {
 
@@ -169,6 +168,8 @@ class App
                 self::$console->println(\Battleship\Color::DEFAULT_GREY);
             }
 
+            static::checkFinish(static::$enemyFleet, 'You are win', \Battleship\Color::YELLOW);
+
             self::$console->println();
 
             static::step($step, 'Computer', Color::YELLOW);
@@ -197,8 +198,10 @@ class App
             }
 
 
+            static::checkFinish(static::$myFleet, 'You are lose', \Battleship\Color::RED);
+
             $step++;
-//            exit();
+
         }
     }
 
@@ -236,5 +239,21 @@ class App
         self::$console->println("Step №{$step} {$color}({$who}){$magenta}");
         self::$console->println("-------------------------------");
         self::$console->println($default);
+    }
+
+    static protected function checkFinish($ships, $message, $color)
+    {
+        $end = true;
+        foreach ($ships as $ship) {
+            if ($ship->getStatus() !== \Battleship\Ship::ERROR) {
+                $end = false;
+            }
+        }
+
+        $default = Color::DEFAULT_GREY;
+        if ($end) {
+            echo "{$color}{$message}{$default}";
+            exit();
+        }
     }
 }
