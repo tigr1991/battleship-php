@@ -106,6 +106,7 @@ class App
 
     public static function StartGame()
     {
+
         self::$console->println("\033[2J\033[;H");
         self::$console->println("                  __");
         self::$console->println("                 /  \\");
@@ -120,6 +121,9 @@ class App
 
         $step = 1;
         while (true) {
+            self::$console->println("==========================================================================================");
+            self::$console->println("==========================================================================================");
+
             static::step($step, 'You', Color::YELLOW);
             self::$console->println("Player, it's your turn");
             self::$console->println("Enter coordinates for your shot :");
