@@ -11,6 +11,7 @@ class App
     /** @var \Battleship\Ship[] */
     private static $enemyFleet = array();
     private static $console;
+    /** @var \Battleship\TextPrinter */
     private static $textPrinter;
 
     static function run()
@@ -80,95 +81,92 @@ class App
         self::InitializeEnemyFleet();
     }
 
+    public static function playerTurn($step)
+    {
+        static::step($step, 'You', Color::YELLOW);
+        self::$console->println("Player, it's your turn");
+
+        self::$console->println("Enemy fleet status:");
+        foreach (self::$enemyFleet as $ship) {
+            if ($ship->getStatus() === \Battleship\Ship::OK) {
+                echo Color::CHARTREUSE;
+                echo "{$ship->getName()} - Alive\n";
+            }
+            if ($ship->getStatus() === \Battleship\Ship::ERROR) {
+                echo Color::RED;
+                echo "{$ship->getName()} - Killed\n";
+            }
+        }
+        echo Color::DEFAULT_GREY;
+
+
+
+
+        self::$console->println("Enter coordinates for your shot :");
+        $position = readline("");
+
+        $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
+        if ($isHit) {
+            self::$console->println(\Battleship\Color::RED);
+            static::hit();
+            echo "Yeah ! Nice hit !";
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
+        } else {
+            self::$console->println(\Battleship\Color::CADET_BLUE);
+            static::hit();
+            echo "Miss";
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
+        }
+    }
+
+    public static function enemyTurn($step)
+    {
+        static::step($step, 'Computer', Color::YELLOW);
+        $position = self::getRandomPosition();
+        $isHit = GameController::checkIsHit(self::$myFleet, $position);
+
+        if ($isHit) {
+            self::$console->println(\Battleship\Color::RED);
+            static::hit();
+            echo "Oooop! Computer hit you!";
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
+        } else {
+            self::$console->println(\Battleship\Color::CADET_BLUE);
+            static::hit();
+            echo "Yeah! Computer miss";
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
+        }
+
+        self::$console->println();
+        printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
+        if ($isHit) {
+            self::$console->println(\Battleship\Color::RED);
+            static::hit();
+            echo "Yeah ! Nice hit !";
+            self::$console->println(\Battleship\Color::DEFAULT_GREY);
+        }
+    }
+
     public static function StartGame()
     {
-
-        self::$console->println("\033[2J\033[;H");
-        self::$console->println("                  __");
-        self::$console->println("                 /  \\");
-        self::$console->println("           .-.  |    |");
-        self::$console->println("   *    _.-'  \\  \\__/");
-        self::$console->println("    \\.-'       \\");
-        self::$console->println("   /          _/");
-        self::$console->println("  |      _  /\" \"");
-        self::$console->println("  |     /_\'");
-        self::$console->println("   \\    \\_/");
-        self::$console->println("    \" \"\" \"\" \"\" \"");
+        self::$textPrinter->drawCanon();
 
         $step = 1;
         while (true) {
             self::$console->println("\n\n\n==========================================================================================");
             self::$console->println("==========================================================================================");
 
-            static::step($step, 'You', Color::YELLOW);
-            self::$console->println("Player, it's your turn");
-
-            self::$console->println("Enemy fleet status:");
-            foreach (self::$enemyFleet as $ship) {
-                if ($ship->getStatus() === \Battleship\Ship::OK) {
-                    echo Color::CHARTREUSE;
-                    echo "{$ship->getName()} - Alive\n";
-                }
-                if ($ship->getStatus() === \Battleship\Ship::ERROR) {
-                    echo Color::RED;
-                    echo "{$ship->getName()} - Killed\n";
-                }
-            }
-            echo Color::DEFAULT_GREY;
-
-
-
-
-            self::$console->println("Enter coordinates for your shot :");
-            $position = readline("");
-
-            $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
-            if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
-                static::hit();
-                echo "Yeah ! Nice hit !";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
-            } else {
-                self::$console->println(\Battleship\Color::CADET_BLUE);
-                static::hit();
-                echo "Miss";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
-            }
+            self::playerTurn($step);
 
             static::checkFinish(static::$enemyFleet, 'You are win', \Battleship\Color::YELLOW);
 
             self::$console->println();
 
-            static::step($step, 'Computer', Color::YELLOW);
-            $position = self::getRandomPosition();
-            $isHit = GameController::checkIsHit(self::$myFleet, $position);
-
-            if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
-                static::hit();
-                echo "Oooop! Computer hit you!";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
-            } else {
-                self::$console->println(\Battleship\Color::CADET_BLUE);
-                static::hit();
-                echo "Yeah! Computer miss";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
-            }
-
-            self::$console->println();
-            printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
-            if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
-                static::hit();
-                echo "Yeah ! Nice hit !";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
-            }
-
+            static::enemyTurn($step);
 
             static::checkFinish(static::$myFleet, 'You are lose', \Battleship\Color::RED);
 
             $step++;
-
         }
     }
 
@@ -187,14 +185,7 @@ class App
     static protected function hit()
     {
         self::beep();
-        self::$console->println("                \\         .  ./");
-        self::$console->println("              \\      .:\" \";'.:..\" \"   /");
-        self::$console->println("                  (M^^.^~~:.'\" \").");
-        self::$console->println("            -   (/  .    . . \\ \\)  -");
-        self::$console->println("               ((| :. ~ ^  :. .|))");
-        self::$console->println("            -   (\\- |  \\ /  |  /)  -");
-        self::$console->println("                 -\\  \\     /  /-");
-        self::$console->println("                   \\  \\   /  /");
+        self::$textPrinter->drawBoom();
     }
 
     static protected function step(int $step, string $who, string $color)

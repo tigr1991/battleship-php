@@ -14,6 +14,21 @@ class TextPrinter
         $this->console = new \Console();
     }
 
+    public function drawCanon()
+    {
+        $this->console->println("\033[2J\033[;H");
+        $this->console->println("                  __");
+        $this->console->println("                 /  \\");
+        $this->console->println("           .-.  |    |");
+        $this->console->println("   *    _.-'  \\  \\__/");
+        $this->console->println("    \\.-'       \\");
+        $this->console->println("   /          _/");
+        $this->console->println("  |      _  /\" \"");
+        $this->console->println("  |     /_\'");
+        $this->console->println("   \\    \\_/");
+        $this->console->println("    \" \"\" \"\" \"\" \"");
+    }
+
     public function drawShip()
     {
         $this->console->setForegroundColor(Color::MAGENTA);
@@ -34,4 +49,15 @@ class TextPrinter
         $this->console->println();
         $this->console->resetForegroundColor();
     }
+
+    public function drawBoom()
+    {
+        $this->console->println("                \\         .  ./");
+        $this->console->println("              \\      .:\" \";'.:..\" \"   /");
+        $this->console->println("                  (M^^.^~~:.'\" \").");
+        $this->console->println("            -   (/  .    . . \\ \\)  -");
+        $this->console->println("               ((| :. ~ ^  :. .|))");
+        $this->console->println("            -   (\\- |  \\ /  |  /)  -");
+        $this->console->println("                 -\\  \\     /  /-");
+        $this->console->println("                   \\  \\   /  /");    }
 }
