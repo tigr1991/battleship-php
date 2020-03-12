@@ -80,6 +80,7 @@ class App
 
         self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
+        return;
         /** @var \Battleship\Ship $ship */
         foreach (self::$myFleet as $ship) {
 

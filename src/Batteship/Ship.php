@@ -2,6 +2,7 @@
 
 namespace Battleship;
 
+
 class Ship
 {
 
@@ -46,7 +47,10 @@ class Ship
         $letter = substr($input, 0, 1);
         $number = substr($input, 1, 1);
 
-        array_push($this->positions, new Position($letter, $number));
+        $position = new Position($letter, $number);
+        $position->setStatus(Position::STATUS_SHIP_ALIVE);
+
+        array_push($this->positions, $position);
     }
 
     public function &getPositions()

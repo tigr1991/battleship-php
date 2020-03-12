@@ -4,11 +4,17 @@ namespace Battleship;
 
 class Position
 {
+    public const STATUS_FREE = 0;
+    public const STATUS_SHIP_ALIVE = 1;
+    public const STATUS_SHIP_DESTROYED = 2;
+
     /**
      * @var string
      */
     private $column;
     private $row;
+
+    private $status;
 
     /**
      * Position constructor.
@@ -22,6 +28,8 @@ class Position
             throw new \Exception("Invalid number");
         }
         $this->row = $number;
+
+        $this->status = self::STATUS_FREE;
     }
 
     public function getColumn()
@@ -33,6 +41,25 @@ class Position
     {
         return $this->row;
     }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     * @return Position
+     */
+    public function setStatus(int $status): Position
+    {
+        $this->status = $status;
+        return $this;
+    }
+
 
     public function __toString()
     {

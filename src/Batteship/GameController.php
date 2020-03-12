@@ -20,6 +20,7 @@ class GameController
         foreach ($fleet as $ship) {
             foreach ($ship->getPositions() as $position) {
                 if ($position == $shot) {
+                    $position->setStatus(Position::STATUS_SHIP_DESTROYED);
                     return true;
                 }
             }
