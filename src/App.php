@@ -59,7 +59,9 @@ class App
             printf("Please enter the positions for the %s (size: %s)", $ship->getName(), $ship->getSize());
             for ($i = 1; $i <= $ship->getSize(); $i++) {
                 while(true) {
+                    self::$console->println(\Battleship\Color::YELLOW);
                     printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
+                    self::$console->println(\Battleship\Color::DEFAULT_GREY);
                     $input = readline("");
                     try {
                         $ship->addPosition($input);
