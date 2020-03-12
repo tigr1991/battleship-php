@@ -80,15 +80,24 @@ class App
 
         self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
+        /** @var \Battleship\Ship $ship */
         foreach (self::$myFleet as $ship) {
 
             self::$console->println();
             printf("Please enter the positions for the %s (size: %s)", $ship->getName(), $ship->getSize());
-break;
             for ($i = 1; $i <= $ship->getSize(); $i++) {
-                printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
-                $input = readline("");
-                $ship->addPosition($input);
+                while(true) {
+                    printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
+                    $input = readline("");
+                    try {
+                        $ship->addPosition($input);
+                        break;
+                    } catch (Exception $e) {
+                        printf(\Battleship\Color::RED);
+                        printf("Incorrect input, pls try again!");
+                        printf(\Battleship\Color::DEFAULT_GREY);
+                    }
+                }
             }
         }
     }

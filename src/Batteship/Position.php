@@ -18,6 +18,9 @@ class Position
     public function __construct($letter, $number)
     {
         $this->column = Letter::validate(strtoupper($letter));
+        if (!\is_numeric($number)) {
+            throw new \Exception("Invalid number");
+        }
         $this->row = $number;
     }
 
