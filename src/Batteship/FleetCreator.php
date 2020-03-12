@@ -16,7 +16,7 @@ class FleetCreator
             case 1:
                 return $this->var1();
             case 2:
-                return $this->var2();
+//                return $this->var2();
             case 3:
                 return $this->var3();
             case 4:
