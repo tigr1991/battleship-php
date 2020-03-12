@@ -11,6 +11,7 @@ class FleetCreator
 
     public function getRandomFleet(): array
     {
+        return $this->returnDemo();
         switch (\random_int(1, 6)) {
             case 1:
                 return $this->var1();
@@ -170,6 +171,13 @@ class FleetCreator
         array_push($fleet[4]->getPositions(), new Position('E', 8));
         array_push($fleet[4]->getPositions(), new Position('F', 8));
         return $fleet;
+    }
+
+    private function returnDemo()
+    {
+        $ship = new Ship("TEST", 1, Color::ORANGE);
+        array_push($ship->getPositions(), new Position('A', 1));
+        return [$ship];
     }
 
 

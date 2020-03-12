@@ -59,5 +59,33 @@ class TextPrinter
         $this->console->println("               ((| :. ~ ^  :. .|))");
         $this->console->println("            -   (\\- |  \\ /  |  /)  -");
         $this->console->println("                 -\\  \\     /  /-");
-        $this->console->println("                   \\  \\   /  /");    }
+        $this->console->println("                   \\  \\   /  /");
+    }
+
+    public function drawWin()
+    {
+        $this->console->println("");
+        $this->console->println("");
+        $this->console->println("██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗██╗███╗   ██╗██╗");
+        $this->console->println("╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██║████╗  ██║██║");
+        $this->console->println(" ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║██╔██╗ ██║██║");
+        $this->console->println("  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║██║╚██╗██║╚═╝");
+        $this->console->println("   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║██╗");
+        $this->console->println("   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝");
+        $this->console->println("");
+    }
+
+    public function drawLose()
+    {
+        $this->console->println("");
+        $this->console->println("");
+        $this->console->println("██╗   ██╗ ██████╗ ██╗   ██╗    ██╗      ██████╗ ███████╗███████╗██╗");
+        $this->console->println("╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║     ██╔═══██╗██╔════╝██╔════╝██║");
+        $this->console->println(" ╚████╔╝ ██║   ██║██║   ██║    ██║     ██║   ██║███████╗█████╗  ██║");
+        $this->console->println("  ╚██╔╝  ██║   ██║██║   ██║    ██║     ██║   ██║╚════██║██╔══╝  ╚═╝");
+        $this->console->println("   ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗██╗");
+        $this->console->println("   ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝");
+        $this->console->println("");
+    }
+
 }
