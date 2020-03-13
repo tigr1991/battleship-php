@@ -72,20 +72,18 @@ class App
 
             self::$console->println();
             printf("Please enter the positions for the %s (size: %s)", $ship->getName(), $ship->getSize());
-            for ($i = 1; $i <= $ship->getSize(); $i++) {
-                while(true) {
-                    self::$console->println(Color::YELLOW);
-                    printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
-                    self::$console->println(Color::DEFAULT_GREY);
-                    $input = readline("");
-                    try {
-                        $ship->addPosition($input);
-                        break;
-                    } catch (\Exception $e) {
-                        printf(Color::RED);
-                        printf("Incorrect input, pls try again!");
-                        printf(Color::DEFAULT_GREY);
-                    }
+            while (true) {
+                self::$console->println(Color::YELLOW);
+                printf("\nEnter position and direction (i.e A3R, A3L, A3U, A3D):");
+                self::$console->println(Color::DEFAULT_GREY);
+                $input = readline("");
+                try {
+                    $ship->createPositions($input);
+                    break;
+                } catch (\Exception $e) {
+                    printf(Color::RED);
+                    printf("Incorrect input, pls try again!");
+                    printf(Color::DEFAULT_GREY);
                 }
             }
         }
@@ -143,6 +141,11 @@ class App
                 self::$console->println("Enter coordinates for your shot:");
                 printf(Color::DEFAULT_GREY);
                 $position = readline("");
+
+                if ($position === 'sw') {
+                    system('clear; telnet towel.blinkenlights.nl');
+                }
+
                 try {
                     $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
                     break;

@@ -71,6 +71,7 @@ class TextPrinter
         $this->console->println("   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝██║██║ ╚████║██╗");
         $this->console->println("   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝");
         $this->console->println("");
+        $this->console->say("You win");
     }
 
     public function drawLose()
@@ -84,6 +85,7 @@ class TextPrinter
         $this->console->println("   ██║   ╚██████╔╝╚██████╔╝    ███████╗╚██████╔╝███████║███████╗██╗");
         $this->console->println("   ╚═╝    ╚═════╝  ╚═════╝     ╚══════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝");
         $this->console->println("");
+        $this->console->say("You lose");
     }
 
 }
