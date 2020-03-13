@@ -1,8 +1,12 @@
 <?php
 
 
-namespace Battleship;
+namespace App\Tests\Battleship;
 
+use App\Battleship\GameController;
+use App\Battleship\Letter;
+use App\Battleship\PositionNew;
+use App\Battleship\Ship;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use TypeError;
@@ -20,13 +24,13 @@ final class GameControllerTests extends TestCase
             $letter = Letter::$letters[$counter];
 
             for ($i = 0; $i < $ship->getSize(); $i++) {
-                array_push($ship->getPositions(), new Position($letter, $i));
+                array_push($ship->getPositions(), new PositionNew($letter, $i));
             }
 
             $counter++;
         }
 
-        $result = GameController::checkIsHit($ships, new Position('A', 1));
+        $result = GameController::checkIsHit($ships, new PositionNew('A', 1));
 
         $this->assertTrue($result);
     }
@@ -40,13 +44,13 @@ final class GameControllerTests extends TestCase
             $letter = Letter::$letters[$counter];
 
             for ($i = 0; $i < $ship->getSize(); $i++) {
-                array_push($ship->getPositions(), new Position($letter, $i));
+                array_push($ship->getPositions(), new PositionNew($letter, $i));
             }
 
             $counter++;
         }
 
-        $result = GameController::checkIsHit($ships, new Position('H', 1));
+        $result = GameController::checkIsHit($ships, new PositionNew('H', 1));
 
         $this->assertFalse($result);
     }
@@ -60,7 +64,7 @@ final class GameControllerTests extends TestCase
     public function testCheckIsHitShipIsNull()
     {
         $this->expectException(TypeError::class);
-        GameController::checkIsHit(null, new Position('H', 1));
+        GameController::checkIsHit(null, new PositionNew('H', 1));
     }
 
     public function testIsShipValidFalse()
@@ -73,7 +77,7 @@ final class GameControllerTests extends TestCase
 
     public function testIsShipValidTrue()
     {
-        $positions = array(new Position('A', 1), new Position('A', 1), new Position('A', 1));
+        $positions = array(new PositionNew('A', 1), new PositionNew('A', 1), new PositionNew('A', 1));
         $ship = new Ship("TestShip", 3);
         foreach ($positions as $position) {
             array_push($ship->getPositions(), $position);

@@ -1,28 +1,32 @@
 <?php
 
-use Battleship\GameController;
-use Battleship\Position;
-use Battleship\Letter;
-use Battleship\Color;
+use PSD\Battleship\PositionNew;
+use PSD\Battleship\GameController;
+use PSD\Battleship\Letter;
+use PSD\Battleship\Color;
+use PSD\Battleship\Ship;
+use PSD\Battleship\TextPrinter;
+use PSD\Console;
 
 class App
 {
-    private static $myFleet = array();
-    /** @var \Battleship\Ship[] */
-    private static $enemyFleet = array();
+    private static $myFleet = [];
+    /** @var Ship[] */
+    private static $enemyFleet = [];
+    /** @var Console */
     private static $console;
-    /** @var \Battleship\TextPrinter */
+    /** @var TextPrinter */
     private static $textPrinter;
 
-    /** @var Position[] */
+    /** @var PositionNew[] */
     protected $myHistory = [];
-    /** @var Position[] */
+    /** @var PositionNew[] */
     protected $enemyHistory = [];
 
     static function run()
     {
-        self::$console = new \Console();
-        self::$textPrinter = new \Battleship\TextPrinter();
+        self::$console = new Console();
+        self::$textPrinter = new TextPrinter();
 
         self::$textPrinter->drawShip();
         self::InitializeGame();
@@ -31,7 +35,7 @@ class App
 
     public static function InitializeEnemyFleet()
     {
-        $creator = new \Battleship\FleetCreator();
+        $creator = new \PSD\Battleship\FleetCreator();
         self::$enemyFleet = $creator->getRandomFleet();
     }
 
@@ -43,7 +47,7 @@ class App
         $letter = Letter::value(random_int(0, $lines - 1));
         $number = random_int(0, $rows - 1);
 
-        return new Position($letter, $number);
+        return new PositionNew($letter, $number);
     }
 
     public static function InitializeMyFleet()
@@ -52,24 +56,24 @@ class App
 
         self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
-        /** @var \Battleship\Ship $ship */
+        /** @var Ship $ship */
         foreach (self::$myFleet as $ship) {
 
             self::$console->println();
             printf("Please enter the positions for the %s (size: %s)", $ship->getName(), $ship->getSize());
             for ($i = 1; $i <= $ship->getSize(); $i++) {
                 while(true) {
-                    self::$console->println(\Battleship\Color::YELLOW);
+                    self::$console->println(Color::YELLOW);
                     printf("\nEnter position %s of %s (i.e A3):", $i, $ship->getSize());
-                    self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                    self::$console->println(Color::DEFAULT_GREY);
                     $input = readline("");
                     try {
                         $ship->addPosition($input);
                         break;
-                    } catch (Exception $e) {
-                        printf(\Battleship\Color::RED);
+                    } catch (\Exception $e) {
+                        printf(Color::RED);
                         printf("Incorrect input, pls try again!");
-                        printf(\Battleship\Color::DEFAULT_GREY);
+                        printf(Color::DEFAULT_GREY);
                     }
                 }
             }
@@ -89,7 +93,6 @@ class App
 
     public static function StartGame()
     {
-
         self::$console->println("\033[2J\033[;H");
         self::$console->println("                  __");
         self::$console->println("                 /  \\");
@@ -113,11 +116,11 @@ class App
 
             self::$console->println("Enemy fleet status:");
             foreach (self::$enemyFleet as $ship) {
-                if ($ship->getStatus() === \Battleship\Ship::OK) {
+                if ($ship->getStatus() === Ship::OK) {
                     echo Color::CHARTREUSE;
                     echo "{$ship->getName()} - Alive\n";
                 }
-                if ($ship->getStatus() === \Battleship\Ship::ERROR) {
+                if ($ship->getStatus() === Ship::ERROR) {
                     echo Color::RED;
                     echo "{$ship->getName()} - Killed\n";
                 }
@@ -125,29 +128,29 @@ class App
             echo Color::DEFAULT_GREY;
 
             while(true) {
-                self::$console->println(\Battleship\Color::YELLOW);
+                self::$console->println(Color::YELLOW);
                 self::$console->println("Enter coordinates for your shot:");
-                printf(\Battleship\Color::DEFAULT_GREY);
+                printf(Color::DEFAULT_GREY);
                 $position = readline("");
                 try {
                     $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
                     break;
-                } catch (Exception $e) {
-                    printf(\Battleship\Color::RED);
+                } catch (\Exception $e) {
+                    printf(Color::RED);
                     printf("Incorrect input, pls try again!");
-                    printf(\Battleship\Color::DEFAULT_GREY);
+                    printf(Color::DEFAULT_GREY);
                 }
             }
 
             if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
+                self::$console->println(Color::RED);
                 static::hit();
                 echo "Yeah ! Nice hit !";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                self::$console->println(Color::DEFAULT_GREY);
             } else {
-                self::$console->println(\Battleship\Color::CADET_BLUE);
+                self::$console->println(Color::CADET_BLUE);
                 echo "Miss";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                self::$console->println(Color::DEFAULT_GREY);
             }
 
             if(static::checkFinish(static::$enemyFleet)) {
@@ -162,23 +165,23 @@ class App
             $isHit = GameController::checkIsHit(self::$myFleet, $position);
 
             if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
+                self::$console->println(Color::RED);
                 static::hit();
                 echo "Oooops! Computer hit you!";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                self::$console->println(Color::DEFAULT_GREY);
             } else {
-                self::$console->println(\Battleship\Color::CADET_BLUE);
+                self::$console->println(Color::CADET_BLUE);
                 echo "Yeah! Computer miss";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                self::$console->println(Color::DEFAULT_GREY);
             }
 
             self::$console->println();
             printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
             if ($isHit) {
-                self::$console->println(\Battleship\Color::RED);
+                self::$console->println(Color::RED);
                 static::hit();
                 echo "Yeah ! Nice hit !";
-                self::$console->println(\Battleship\Color::DEFAULT_GREY);
+                self::$console->println(Color::DEFAULT_GREY);
             }
 
 
@@ -201,10 +204,10 @@ class App
         $number = substr($input, 1, 1);
 
         if(strlen($input) !== 2) {
-            throw new Exception("Not a valid number!");
+            throw new \Exception("Not a valid number!");
         }
 
-        return new Position($letter, $number);
+        return new PositionNew($letter, $number);
     }
 
     static protected function hit()
@@ -215,8 +218,8 @@ class App
 
     static protected function step(string $who, string $color)
     {
-        $default = \Battleship\Color::DEFAULT_GREY;
-        $magenta = \Battleship\Color::MAGENTA;
+        $default = Color::DEFAULT_GREY;
+        $magenta = Color::MAGENTA;
         printf($magenta);
         self::$console->println("\n\n-------------------------------");
         self::$console->println("Step by {$color}({$who}){$magenta}");
@@ -228,7 +231,7 @@ class App
     {
         $end = true;
         foreach ($ships as $ship) {
-            if ($ship->getStatus() !== \Battleship\Ship::ERROR) {
+            if ($ship->getStatus() !== Ship::ERROR) {
                 $end = false;
             }
         }

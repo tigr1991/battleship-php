@@ -1,9 +1,13 @@
 {
   "name": "proscrumdev/battleship-php",
   "description": "simple console game",
-  "autoload": {
+  "autoload":      {
+    "psr-4": {
+      "PSD\\": "src/",
+      "PSD\\Tests\\": "tests/"
+    },
     "classmap": [
-      "src/"
+      "bin/App.php"
     ]
   },
   "require": {

@@ -1,5 +1,6 @@
 <?php
 
+namespace PSD;
 //use Battleship\Color;
 
 class Console

@@ -1,6 +1,6 @@
 <?php
 
-namespace Battleship;
+namespace PSD\Battleship;
 
 class Color
 {

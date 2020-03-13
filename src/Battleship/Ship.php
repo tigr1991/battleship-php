@@ -1,7 +1,6 @@
 <?php
 
-namespace Battleship;
-
+namespace PSD\Battleship;
 
 class Ship
 {
@@ -51,8 +50,8 @@ class Ship
         $letter = substr($input, 0, 1);
         $number = substr($input, 1, 1);
 
-        $position = new Position($letter, $number);
-        $position->setStatus(Position::STATUS_SHIP_ALIVE);
+        $position = new PositionNew($letter, $number);
+        $position->setStatus(PositionNew::STATUS_SHIP_ALIVE);
 
         array_push($this->positions, $position);
     }
@@ -71,7 +70,7 @@ class Ship
     {
         $countHitted = 0;
         foreach ($this->positions as $position) {
-            if ($position->getStatus() === \Battleship\Position::STATUS_SHIP_DESTROYED) {
+            if ($position->getStatus() === \PSD\Battleship\PositionNew::STATUS_SHIP_DESTROYED) {
                 $countHitted++;
             }
         }

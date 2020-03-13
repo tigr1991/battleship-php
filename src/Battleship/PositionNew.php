@@ -1,9 +1,10 @@
 <?php
 
-namespace Battleship;
+namespace PSD\Battleship;
 
-class Position
+class PositionNew
 {
+
     public const STATUS_FREE = 0;
     public const STATUS_SHIP_ALIVE = 1;
     public const STATUS_SHIP_DESTROYED = 2;
@@ -52,9 +53,9 @@ class Position
 
     /**
      * @param int $status
-     * @return Position
+     * @return PositionNew
      */
-    public function setStatus(int $status): Position
+    public function setStatus(int $status): PositionNew
     {
         $this->status = $status;
         return $this;

@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
-namespace Battleship;
-
+namespace PSD\Battleship;
 
 class TextPrinter
 {
@@ -11,7 +9,7 @@ class TextPrinter
 
     public function __construct()
     {
-        $this->console = new \Console();
+        $this->console = new \PSD\Console();
     }
 
     public function drawCanon()

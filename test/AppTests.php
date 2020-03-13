@@ -1,7 +1,8 @@
 <?php
 
+namespace App\Tests;
 
-use Battleship\Position;
+use App\Battleship\PositionNew;
 use PHPUnit\Framework\TestCase;
 
 
@@ -10,17 +11,17 @@ class AppTests extends TestCase
 
     public function testParsePosition()
     {
-        $actual = App::parsePosition("A1");
-        $expected = new Position('A', 1);
+        $actual = \App\App::parsePosition("A1");
+        $expected = new PositionNew('A', 1);
         $this->assertEquals($expected, $actual);
     }
 
     public function testParsePosition2()
     {
         //given
-        $expected = new Position('B', 1);
+        $expected = new PositionNew('B', 1);
         //when
-        $actual = App::parsePosition("B1");
+        $actual = \App\App::parsePosition("B1");
         //then
         $this->assertEquals($expected, $actual);
     }

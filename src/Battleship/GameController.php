@@ -1,6 +1,6 @@
 <?php
 
-namespace Battleship;
+namespace PSD\Battleship;
 
 use InvalidArgumentException;
 
@@ -20,7 +20,7 @@ class GameController
         foreach ($fleet as $ship) {
             foreach ($ship->getPositions() as $position) {
                 if ($position == $shot) {
-                    $position->setStatus(Position::STATUS_SHIP_DESTROYED);
+                    $position->setStatus(PositionNew::STATUS_SHIP_DESTROYED);
                     return true;
                 }
             }
@@ -31,7 +31,7 @@ class GameController
 
     public static function initializeShips()
     {
-        return Array(
+        return array(
             new Ship("Aircraft Carrier", 5, Color::CADET_BLUE),
             new Ship("Battleship", 4, Color::RED),
             new Ship("Submarine", 3, Color::CHARTREUSE),
@@ -52,6 +52,6 @@ class GameController
         $letter = Letter::value(random_int(0, $lines - 1));
         $number = random_int(0, $rows - 1);
 
-        return new Position($letter, $number);
+        return new PositionNew($letter, $number);
     }
 }

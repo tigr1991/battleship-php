@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Tests;
+
 use PHPUnit\Framework\TestCase;
 
 final class AppE2ETests extends TestCase
@@ -10,7 +12,7 @@ final class AppE2ETests extends TestCase
         ob_start();
         try {
             system("echo \"$input\" | composer run game 2>&1");
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
         }
         $out = ob_get_contents();
         ob_end_clean();
@@ -25,7 +27,7 @@ final class AppE2ETests extends TestCase
         ob_start();
         try {
             system("echo \"$input\" | composer run game 2>&1");
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             echo $exception->getMessage();
         }
         $out = ob_get_contents();
