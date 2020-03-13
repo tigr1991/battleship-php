@@ -3,10 +3,10 @@
 
 namespace App\Tests\Battleship;
 
-use App\Battleship\GameController;
-use App\Battleship\Letter;
-use App\Battleship\PositionNew;
-use App\Battleship\Ship;
+use PSD\Battleship\GameController;
+use PSD\Battleship\Letter;
+use PSD\Battleship\PositionNew;
+use PSD\Battleship\Ship;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use TypeError;
