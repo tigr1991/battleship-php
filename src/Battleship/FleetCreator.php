@@ -28,8 +28,11 @@ class FleetCreator
     }
     public function getRandomComputerPhraseMiss(): string
     {
-        switch (\random_int(1, 6)) {
+        switch (\random_int(1, 9)) {
             case 1:
+            case 7:
+            case 8:
+            case 9:
                 return 'Лошара';
             case 2:
                 return 'Loser';
