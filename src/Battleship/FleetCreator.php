@@ -26,6 +26,40 @@ class FleetCreator
                 return $this->var6();
         }
     }
+    public function getRandomComputerPhraseMiss(): string
+    {
+        switch (\random_int(1, 6)) {
+            case 1:
+                return 'Лошара';
+            case 2:
+                return 'Loser';
+            case 3:
+                return 'Ha-ha';
+            case 4:
+                return 'Лох';
+            case 5:
+                return 'Cry';
+            case 6:
+                return 'Miss';
+        }
+    }
+    public function getRandomComputerPhraseHit(): string
+    {
+        switch (\random_int(1, 6)) {
+            case 1:
+                return 'Shit';
+            case 2:
+                return 'Nooo';
+            case 3:
+                return 'No please';
+            case 4:
+                return 'Pain';
+            case 5:
+                return 'Monster';
+            case 6:
+                return 'Ouche';
+        }
+    }
 
     protected function var1()
     {

@@ -39,6 +39,17 @@ class App
         self::$enemyFleet = $creator->getRandomFleet();
     }
 
+    public static function InitializeComputerPhraseHit()
+    {
+        $creator = new \PSD\Battleship\FleetCreator();
+        return $creator->getRandomComputerPhraseHit();
+    }
+    public static function InitializeComputerPhraseMiss()
+    {
+        $creator = new \PSD\Battleship\FleetCreator();
+        return $creator->getRandomComputerPhraseMiss();
+    }
+
     public static function getRandomPosition()
     {
         $rows = 8;
@@ -146,13 +157,13 @@ class App
                 self::$console->println(Color::RED);
                 static::hit();
                 echo "Yeah ! Nice hit !";
-                self::$console->say('Хороший выстрел');
+                self::$console->say(self::InitializeComputerPhraseHit());
 
                 self::$console->println(Color::DEFAULT_GREY);
             } else {
                 self::$console->println(Color::CADET_BLUE);
                 echo "Miss";
-                self::$console->say('Лошара');
+                self::$console->say(self::InitializeComputerPhraseMiss());
                 self::$console->println(Color::DEFAULT_GREY);
             }
 
@@ -162,7 +173,7 @@ class App
             }
 
             self::$console->println();
-
+            usleep(100000);
             static::step('Computer', Color::YELLOW);
             $position = self::getRandomPosition();
             $isHit = GameController::checkIsHit(self::$myFleet, $position);
@@ -192,7 +203,7 @@ class App
                 self::$textPrinter->drawLose();
                 exit();
             }
-
+            usleep(100000);
             $step++;
 //            exit();
             self::$console->println("\n\n\n==========================================================================================");
