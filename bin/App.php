@@ -194,13 +194,6 @@ class App
 
             self::$console->println();
             printf("Computer shoot in %s%s and %s", $position->getColumn(), $position->getRow(), $isHit ? "hit your ship !\n" : "miss\n");
-            if ($isHit) {
-                self::$console->println(Color::RED);
-                static::hit();
-                echo "Yeah ! Nice hit !";
-                self::$console->println(Color::DEFAULT_GREY);
-            }
-
 
             if(static::checkFinish(static::$myFleet)) {
                 self::$textPrinter->drawLose();
