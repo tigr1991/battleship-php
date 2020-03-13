@@ -15,8 +15,16 @@ class Console
         echo($color);
     }
 
-    function println($line = "")
+    function println($line = "", bool $withVoice = false)
     {
         echo "$line\n";
+        if ($withVoice) {
+            system("say \"{$line}\"");
+        }
+    }
+
+    function say($line)
+    {
+        system("say \"{$line}\"");
     }
 }

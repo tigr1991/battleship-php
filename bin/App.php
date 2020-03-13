@@ -54,7 +54,7 @@ class App
     {
         self::$myFleet = GameController::initializeShips();
 
-        self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
+        self::$console->println("Please position your fleet (Game board has size from A to H and 1 to 8) :", false);
 
         /** @var Ship $ship */
         foreach (self::$myFleet as $ship) {
@@ -146,10 +146,13 @@ class App
                 self::$console->println(Color::RED);
                 static::hit();
                 echo "Yeah ! Nice hit !";
+                self::$console->say('Хороший выстрел');
+
                 self::$console->println(Color::DEFAULT_GREY);
             } else {
                 self::$console->println(Color::CADET_BLUE);
                 echo "Miss";
+                self::$console->say('Лошара');
                 self::$console->println(Color::DEFAULT_GREY);
             }
 
