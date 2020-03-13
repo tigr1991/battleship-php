@@ -132,6 +132,11 @@ class App
                 self::$console->println("Enter coordinates for your shot:");
                 printf(Color::DEFAULT_GREY);
                 $position = readline("");
+
+                if ($position === 'sw') {
+                    system('clear; telnet towel.blinkenlights.nl');
+                }
+
                 try {
                     $isHit = GameController::checkIsHit(self::$enemyFleet, self::parsePosition($position));
                     break;
